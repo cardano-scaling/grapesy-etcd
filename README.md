@@ -8,9 +8,5 @@ cabal build all
 ```
 
 ```
-cabal run route_guide_server
-```
-
-```
-cabal run route_guide_client
+cabal run grapesy-etcd
 ```
