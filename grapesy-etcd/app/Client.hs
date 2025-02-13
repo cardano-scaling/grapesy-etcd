@@ -1,15 +1,8 @@
 module Client (main) where
 
-import Control.Concurrent
-import Control.Monad
-import Data.Int
-import Data.Text (Text)
-import System.Random
-
 import Network.GRPC.Client
 import Network.GRPC.Client.StreamType.IO
 import Network.GRPC.Common
-import Network.GRPC.Common.NextElem qualified as NextElem
 import Network.GRPC.Common.Protobuf
 
 import Proto.API.Etcd
