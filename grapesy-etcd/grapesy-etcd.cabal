@@ -1,0 +1,98 @@
+cabal-version: 2.2
+name:          grapesy-etcd
+version:       0.1.0
+synopsis:      grapesy-etcd - GRPC interface to etcd
+author:        IOG
+copyright:     2025 IOG
+license:       Apache-2.0
+license-files:
+  LICENSE
+  NOTICE
+
+extra-source-files: proto/etcd/api/etcdserverpb/rpc.proto
+                    proto/etcd/api/authpb/auth.proto
+                    proto/etcd/api/mvccpb/kv.proto
+                    proto/etcd/api/versionpb/version.proto
+                    proto/gogoproto/gogo.proto
+                    proto/google/api/annotations.proto
+                    proto/google/api/http.proto
+                    proto/protoc-gen-openapiv2/options/annotations.proto
+                    proto/protoc-gen-openapiv2/options/openapiv2.proto
+data-dir:           data
+data-files:         route_guide_db.json
+tested-with:        GHC==8.10.7
+                  , GHC==9.2.8
+                  , GHC==9.4.8
+                  , GHC==9.6.6
+                  , GHC==9.8.2
+                  , GHC==9.10.1
+
+custom-setup
+  setup-depends:
+      base             >= 4.14 && < 5
+    , Cabal            >= 3.0  && < 4
+    , proto-lens-setup >= 0.4  && < 0.5
+
+
+common lang
+  build-depends:    base >= 4.14 && < 5
+  default-language: GHC2021
+  ghc-options:      -Wall
+
+  default-extensions:
+      DataKinds
+      LambdaCase
+      OverloadedLabels
+      OverloadedStrings
+      TypeFamilies
+
+library
+  import:             lang
+  hs-source-dirs:     src
+  build-tool-depends: proto-lens-protoc:proto-lens-protoc
+
+  build-depends:
+    , aeson              >= 1.5
+    , containers         >= 0.6
+    , grapesy            >= 1.0
+    , proto-lens-runtime >= 0.7 
+    , proto-lens-protobuf-types >= 0.7 
+    , proto-lens-protoc >= 0.7 
+    , time               >= 1.9 
+  exposed-modules:
+      Proto.API.Etcd
+  other-modules:
+      Proto.Etcd.Api.Authpb.Auth
+      Proto.Etcd.Api.Etcdserverpb.Rpc
+      Proto.Etcd.Api.Mvccpb.Kv
+      Proto.Etcd.Api.Versionpb.Version
+      Proto.Gogoproto.Gogo
+      Proto.Google.Api.Annotations
+      Proto.Google.Api.Http
+      Proto.ProtocGenOpenapiv2.Options.Annotations
+      Proto.ProtocGenOpenapiv2.Options.Openapiv2
+      Paths_grapesy_etcd
+  autogen-modules:
+      Proto.Etcd.Api.Authpb.Auth
+      Proto.Etcd.Api.Etcdserverpb.Rpc
+      Proto.Etcd.Api.Mvccpb.Kv
+      Proto.Etcd.Api.Versionpb.Version
+      Proto.Gogoproto.Gogo
+      Proto.Google.Api.Annotations
+      Proto.Google.Api.Http
+      Proto.ProtocGenOpenapiv2.Options.Annotations
+      Proto.ProtocGenOpenapiv2.Options.Openapiv2
+      Paths_grapesy_etcd
+
+executable route_guide_client
+  import:         lang
+  main-is:        Client.hs
+  hs-source-dirs: app
+  ghc-options:    -main-is Client
+  build-depends:   grapesy-etcd
+
+  build-depends:
+    , grapesy
+  build-depends:
+    , random >= 1.2
+    , text   >= 1.2
