@@ -1,9 +1,11 @@
 # grapesy-etcd
 
-The nix shell doesn't work, use
+Repository containing the [grapesy-etcd](grapesy-etcd/) client.
+
+## Building
 
 ```
-nix-shell -p zlib.dev -p protobuf -p haskell.compiler.ghc98 -p snappy
+nix develop
 cabal build all
 ```
 
