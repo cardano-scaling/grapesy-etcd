@@ -72,7 +72,7 @@ library
       Proto.ProtocGenOpenapiv2.Options.Openapiv2
       Paths_grapesy_etcd
 
-executable route_guide_client
+executable grapesy-etc-example
   import:         lang
   main-is:        Client.hs
   hs-source-dirs: app
