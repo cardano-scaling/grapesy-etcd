@@ -10,6 +10,7 @@ let
       src = ../.;
 
       shell.withHoogle = false;
+      shell.packages = p: [p.grapesy-etcd p.proto-lens-protoc];
 
       inputMap = {
         "https://chap.intersectmbo.org/" = inputs.iogx.inputs.CHaP;
@@ -17,12 +18,14 @@ let
 
       name = "grapesy-etcd";
 
-      compiler-nix-name = lib.mkDefault "ghc98";
+      compiler-nix-name = lib.mkDefault "ghc982";
 
       modules = [
         ({ config, ... }: {
           packages = {
             proto-lens-protobuf-types.components.library.build-tools =
+              [ pkgs.protobuf ];
+            grapesy-etcd.components.library.build-tools =
               [ pkgs.protobuf ];
           };
         })
