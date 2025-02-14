@@ -16,3 +16,8 @@ import Proto.Etcd.Api.Etcdserverpb.Rpc
 type instance RequestMetadata          (Protobuf KV meth) = NoMetadata
 type instance ResponseInitialMetadata  (Protobuf KV meth) = NoMetadata
 type instance ResponseTrailingMetadata (Protobuf KV meth) = NoMetadata
+
+
+type instance RequestMetadata          (Protobuf Watch meth) = NoMetadata
+type instance ResponseInitialMetadata  (Protobuf Watch meth) = NoMetadata
+type instance ResponseTrailingMetadata (Protobuf Watch meth) = NoMetadata

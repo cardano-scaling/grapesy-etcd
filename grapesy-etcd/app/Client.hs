@@ -3,6 +3,7 @@ module Client (main) where
 import Network.GRPC.Client
 import Network.GRPC.Client.StreamType.IO
 import Network.GRPC.Common
+import Network.GRPC.Common.NextElem qualified as NextElem
 import Network.GRPC.Common.Protobuf
 
 import Proto.API.Etcd
@@ -25,6 +26,13 @@ put conn = do
     resp <- nonStreaming conn (rpc @(Protobuf KV "put")) req
     print resp
 
+watch :: Connection -> IO ()
+watch conn = do
+    let req = defMessage
+                & #createRequest .~ (defMessage & #key .~ "foo")
+    biDiStreaming conn (rpc @(Protobuf Watch "watch")) $ \send recv -> do
+      NextElem.forM_ (replicate 5 req) send
+      NextElem.whileNext_ recv print
 
 main :: IO ()
 main =
@@ -32,6 +40,7 @@ main =
       putStrLn "-------------- Range --------------"
       range conn
       put conn
+      watch conn
 
   where
     server :: Server
