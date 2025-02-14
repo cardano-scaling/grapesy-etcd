@@ -8,6 +8,9 @@ license:       Apache-2.0
 license-files:
   LICENSE
   NOTICE
+extra-source-files:
+  README.md
+  CHANGELOG.md
 
 extra-source-files: proto/etcd/api/etcdserverpb/rpc.proto
                     proto/etcd/api/authpb/auth.proto
