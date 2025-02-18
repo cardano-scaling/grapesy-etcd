@@ -1,46 +1,65 @@
-# Docs for this file: https://github.com/input-output-hk/iogx/blob/main/doc/api.md#flakenix
 {
-  description = "Change the description field in your flake.nix";
+  description = "grapesy-etcd: gRPC haskell client for etcd.io";
 
   inputs = {
-    iogx = {
-      url = "github:input-output-hk/iogx";
-      inputs.hackage.follows = "hackage";
-      inputs.CHaP.follows = "CHaP";
-      inputs.haskell-nix.follows = "haskell-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixpkgs.follows = "haskell-nix/nixpkgs";
-
-    hackage = {
-      url = "github:input-output-hk/hackage.nix";
-      flake = false;
-    };
-
     CHaP = {
       url = "github:input-output-hk/cardano-haskell-packages?ref=repo";
       flake = false;
     };
-
-    haskell-nix = {
-      url = "github:input-output-hk/haskell.nix";
-      inputs.hackage.follows = "hackage";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    horizon-advance.url = "git+https://gitlab.horizon-haskell.net/package-sets/horizon-advance?ref=lts/ghc-9.10.x";
+    lint-utils = {
+      url = "github:homotopic/lint-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs.url = "github:NixOS/nixpkgs";
   };
 
-  outputs = inputs:
-    inputs.iogx.lib.mkFlake {
+  outputs = inputs@{ self, ... }: inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+    systems = [ "x86_64-linux" "aarch64-linux" ];
+    perSystem = { config, pkgs, system, ... }:
+      with pkgs.haskell.lib.compose;
+      let
 
-      inherit inputs;
+        overlay = final: prev: {
+          grapesy-etcd = dontCheck (addSetupDepends [pkgs.protobuf] (final.callCabal2nix "grapesy-etcd" ./grapesy-etcd { }));
+        };
 
-      repoRoot = ./.;
+        legacyPackages = inputs.horizon-advance.legacyPackages.${system}.extend overlay;
+      in
+      {
 
-      outputs = import ./nix/outputs.nix;
+        checks = let lu = inputs.lint-utils.linters.${system}; in {
+          hlint = lu.hlint { src = self; hlint = pkgs.hlint; };
+          treefmt = lu.treefmt {
+            src = self;
+            buildInputs = [
+              pkgs.haskellPackages.cabal-fmt
+              pkgs.nixpkgs-fmt
+              pkgs.fourmolu
+            ];
+            treefmt = pkgs.treefmt;
+          };
+        };
 
-      systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" "aarch64-linux" ];
 
-    };
+        devShells.default = legacyPackages.grapesy-etcd.env.overrideAttrs (attrs: {
+          buildInputs = attrs.buildInputs ++ [
+            pkgs.haskellPackages.cabal-fmt
+            legacyPackages.cabal-install
+            pkgs.fourmolu
+            pkgs.hlint
+            legacyPackages.proto-lens-protoc
+            pkgs.nixpkgs-fmt
+            pkgs.protobuf
+            pkgs.treefmt
+          ];
+        });
+
+        packages.default = legacyPackages.grapesy-etcd;
+
+      };
+  };
 
   nixConfig = {
     extra-substituters = [ "https://cache.iog.io" ];
