@@ -1,6 +1,6 @@
 cabal-version:      2.2
 name:               grapesy-etcd
-version:            0.2.0
+version:            0.1.0
 synopsis:           grapesy-etcd - GRPC interface to etcd
 author:             IOG
 copyright:          2025 IOG
@@ -33,7 +33,7 @@ custom-setup
 common lang
   build-depends:      base >=4.14 && <5
   default-language:   GHC2021
-  ghc-options:        -Wall -Wmissing-import-lists
+  ghc-options:        -Wall
   default-extensions:
     DataKinds
     LambdaCase
@@ -46,15 +46,11 @@ library
   hs-source-dirs:     src
   build-tool-depends: proto-lens-protoc:proto-lens-protoc
   build-depends:
-    , exceptions
-    , grapesy                    >=1.0 && <1.1
-    , proto-lens-protobuf-types  >=0.7 && <0.8
-    , proto-lens-runtime         >=0.7 && <0.8
+    , grapesy                    >=1.0
+    , proto-lens-protobuf-types  >=0.7
+    , proto-lens-runtime         >=0.7
 
-  exposed-modules:
-    Network.GRPC.Etcd.Client.Simple
-    Proto.API.Etcd
-
+  exposed-modules:    Proto.API.Etcd
   other-modules:
     Paths_grapesy_etcd
     Proto.Etcd.Api.Authpb.Auth

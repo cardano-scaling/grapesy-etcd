@@ -1,10 +1,13 @@
 module Main (main) where
 
-import Network.GRPC.Client (Address (Address), Connection, Server (ServerInsecure), withConnection)
-import Network.GRPC.Common (def)
-import Network.GRPC.Common.Protobuf (defMessage, (&), (.~))
+import Network.GRPC.Client
+import Network.GRPC.Client.StreamType.IO
+import Network.GRPC.Common
+import Network.GRPC.Common.NextElem qualified as NextElem
+import Network.GRPC.Common.Protobuf
+import System.Exit
 
-import Network.GRPC.Etcd.Client.Simple qualified as Etcd
+import Proto.API.Etcd
 
 {-------------------------------------------------------------------------------
   Call some methods of the Etcd service
@@ -12,27 +15,39 @@ import Network.GRPC.Etcd.Client.Simple qualified as Etcd
 
 range :: Connection -> IO ()
 range conn = do
-    let req = defMessage & #key .~ "foo"
-    resp <- Etcd.range conn req
+    let req =
+            defMessage
+                & #key
+                .~ "foo"
+    resp <- nonStreaming conn (rpc @(Protobuf KV "range")) req
     print resp
 
 put :: Connection -> IO ()
 put conn = do
-    let req = defMessage & #key .~ "foo"
-    resp <- Etcd.put conn req
+    let req =
+            defMessage
+                & #key
+                .~ "foo"
+    resp <- nonStreaming conn (rpc @(Protobuf KV "put")) req
     print resp
 
 watch :: Connection -> IO ()
 watch conn = do
-    let req = defMessage & #createRequest .~ (defMessage & #key .~ "foo")
-    Etcd.watch conn [req] print
+    let req =
+            defMessage
+                & #createRequest
+                .~ (defMessage & #key .~ "foo")
+    biDiStreaming conn (rpc @(Protobuf Watch "watch")) $ \send recv -> do
+        NextElem.forM_ [req] send
+        NextElem.whileNext_ recv (const exitSuccess)
 
 main :: IO ()
 main =
-    withConnection def server $ do
-        _ <- range
-        _ <- put
-        watch
+    withConnection def server $ \conn -> do
+        putStrLn "-------------- Range --------------"
+        range conn
+        put conn
+        watch conn
   where
     server :: Server
     server = ServerInsecure $ Address "127.0.0.1" 2379 Nothing
