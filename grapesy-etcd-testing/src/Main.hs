@@ -1,10 +1,11 @@
-module Client (main) where
+module Main (main) where
 
 import Network.GRPC.Client
 import Network.GRPC.Client.StreamType.IO
 import Network.GRPC.Common
 import Network.GRPC.Common.NextElem qualified as NextElem
 import Network.GRPC.Common.Protobuf
+import System.Exit
 
 import Proto.API.Etcd
 
@@ -37,8 +38,8 @@ watch conn = do
                 & #createRequest
                 .~ (defMessage & #key .~ "foo")
     biDiStreaming conn (rpc @(Protobuf Watch "watch")) $ \send recv -> do
-        NextElem.forM_ (replicate 5 req) send
-        NextElem.whileNext_ recv print
+        NextElem.forM_ [req] send
+        NextElem.whileNext_ recv (const exitSuccess)
 
 main :: IO ()
 main =
@@ -50,5 +51,3 @@ main =
   where
     server :: Server
     server = ServerInsecure $ Address "127.0.0.1" 2379 Nothing
-
--- }

@@ -1,8 +1,8 @@
 # One CLI to format the code tree - https://github.com/numtide/treefmt
 
 [formatter.haskell]
-command = "fourmolu"
-options = ["--mode", "inplace", "--check-idempotence",]
+command = "stylish-haskell"
+options = ["-i"]
 includes = [ "*.hs" ]
 
 [formatter.cabal]

@@ -1,2 +1,3 @@
 packages:
   grapesy-etcd
+  grapesy-etcd-testing

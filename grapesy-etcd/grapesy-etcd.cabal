@@ -74,11 +74,3 @@ library
     Proto.ProtocGenOpenapiv2.Options.Annotations
     Proto.ProtocGenOpenapiv2.Options.Openapiv2
     Paths_grapesy_etcd
-
-executable grapesy-etc-example
-  import:         lang
-  main-is:        Client.hs
-  hs-source-dirs: app
-  ghc-options:    -main-is Client
-  build-depends:  grapesy-etcd
-  build-depends:  grapesy
