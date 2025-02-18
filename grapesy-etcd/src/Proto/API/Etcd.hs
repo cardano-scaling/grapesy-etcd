@@ -4,9 +4,14 @@ module Proto.API.Etcd (
     module Proto.Etcd.Api.Etcdserverpb.Rpc,
 ) where
 
-import Network.GRPC.Common
-import Network.GRPC.Common.Protobuf
-import Proto.Etcd.Api.Etcdserverpb.Rpc
+import Network.GRPC.Common (
+    NoMetadata,
+    RequestMetadata,
+    ResponseInitialMetadata,
+    ResponseTrailingMetadata,
+ )
+import Network.GRPC.Common.Protobuf (Protobuf)
+import Proto.Etcd.Api.Etcdserverpb.Rpc (KV, PutRequest, PutResponse, RangeRequest, RangeResponse, Watch, WatchRequest, WatchResponse)
 
 {-------------------------------------------------------------------------------
   Metadata
