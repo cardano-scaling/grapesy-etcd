@@ -1,6 +1,6 @@
 cabal-version:      2.2
 name:               grapesy-etcd
-version:            0.1.0
+version:            0.2.0
 synopsis:           grapesy-etcd - GRPC interface to etcd
 author:             IOG
 copyright:          2025 IOG
@@ -47,9 +47,9 @@ library
   build-tool-depends: proto-lens-protoc:proto-lens-protoc
   build-depends:
     , exceptions
-    , grapesy                    >=1.0
-    , proto-lens-protobuf-types  >=0.7
-    , proto-lens-runtime         >=0.7
+    , grapesy                    >=1.0 && <1.1
+    , proto-lens-protobuf-types  >=0.7 && <0.8
+    , proto-lens-runtime         >=0.7 && <0.8
 
   exposed-modules:
     Network.GRPC.Etcd.Client.Simple
