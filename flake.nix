@@ -62,9 +62,10 @@
   };
 
   nixConfig = {
-    extra-substituters = [ "https://cache.iog.io" ];
+    extra-substituters = [ "https://cache.iog.io" "https://horizon.cachix.org" ];
     extra-trusted-public-keys =
-      [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" ];
+      [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+        "horizon.cachix.org-1:MeEEDRhRZTgv/FFGCv3479/dmJDfJ82G6kfUDxMSAw0=" ];
     allow-import-from-derivation = true;
   };
 }
