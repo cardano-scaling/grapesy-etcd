@@ -1,6 +1,5 @@
-# ChangeLog for grapesy-etc
+# ChangeLog for grapesy-etc-testing
 
 ## 0.1.0
 
-* Initial version of grapesy-etc client. Contains full bindings to the etcdv3 spec as defined in
-rpc.proto.
+* Initial version of grapesy-etc-testing client. Runs a non-streaming call to `put` and a bidirectional streaming call to `watch`.
