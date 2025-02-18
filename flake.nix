@@ -12,17 +12,17 @@
       url = "github:homotopic/lint-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
   };
 
   outputs = inputs@{ self, ... }: inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-    systems = [ "x86_64-linux" "aarch64-linux" ];
+    systems = [ "x86_64-darwin" "x86_64-linux" "aarch64-darwin" "aarch64-linux" ];
     perSystem = { config, pkgs, system, ... }:
       with pkgs.haskell.lib.compose;
       let
 
         overlay = final: prev: {
-          grapesy-etcd = dontCheck (addSetupDepends [pkgs.protobuf] (final.callCabal2nix "grapesy-etcd" ./grapesy-etcd { }));
+          grapesy-etcd = dontCheck (addSetupDepends [ pkgs.protobuf ] (final.callCabal2nix "grapesy-etcd" ./grapesy-etcd { }));
         };
 
         legacyPackages = inputs.horizon-advance.legacyPackages.${system}.extend overlay;
@@ -35,8 +35,8 @@
             src = self;
             buildInputs = [
               pkgs.haskellPackages.cabal-fmt
+              pkgs.haskellPackages.fourmolu
               pkgs.nixpkgs-fmt
-              pkgs.fourmolu
             ];
             treefmt = pkgs.treefmt;
           };
@@ -45,11 +45,11 @@
 
         devShells.default = legacyPackages.grapesy-etcd.env.overrideAttrs (attrs: {
           buildInputs = attrs.buildInputs ++ [
-            pkgs.haskellPackages.cabal-fmt
             legacyPackages.cabal-install
-            pkgs.fourmolu
-            pkgs.hlint
             legacyPackages.proto-lens-protoc
+            pkgs.haskellPackages.cabal-fmt
+            pkgs.haskellPackages.fourmolu
+            pkgs.hlint
             pkgs.nixpkgs-fmt
             pkgs.protobuf
             pkgs.treefmt
@@ -64,8 +64,10 @@
   nixConfig = {
     extra-substituters = [ "https://cache.iog.io" "https://horizon.cachix.org" ];
     extra-trusted-public-keys =
-      [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-        "horizon.cachix.org-1:MeEEDRhRZTgv/FFGCv3479/dmJDfJ82G6kfUDxMSAw0=" ];
+      [
+        "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+        "horizon.cachix.org-1:MeEEDRhRZTgv/FFGCv3479/dmJDfJ82G6kfUDxMSAw0="
+      ];
     allow-import-from-derivation = true;
   };
 }
