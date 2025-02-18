@@ -1,3 +1,3 @@
-# grapesy-etcd
+# grapesy-etcd-testing
 
-[grapesy](https://hackage.haskell.org/grapesy) client for [etcd](https://etcd.io/).
+Testing client executable for [grapesy-etcd](https://hackage.haskell.org/package/grapesy-etcd).
