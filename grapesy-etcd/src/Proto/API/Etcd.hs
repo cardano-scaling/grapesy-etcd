@@ -6,7 +6,6 @@ module Proto.API.Etcd (
 
 import Network.GRPC.Common
 import Network.GRPC.Common.Protobuf
-
 import Proto.Etcd.Api.Etcdserverpb.Rpc
 
 {-------------------------------------------------------------------------------

@@ -46,11 +46,15 @@ library
   hs-source-dirs:     src
   build-tool-depends: proto-lens-protoc:proto-lens-protoc
   build-depends:
+    , exceptions
     , grapesy                    >=1.0
     , proto-lens-protobuf-types  >=0.7
     , proto-lens-runtime         >=0.7
 
-  exposed-modules:    Proto.API.Etcd
+  exposed-modules:
+    Network.GRPC.Etcd.Client.Simple
+    Proto.API.Etcd
+
   other-modules:
     Paths_grapesy_etcd
     Proto.Etcd.Api.Authpb.Auth
