@@ -22,23 +22,23 @@
       let
 
         overlay = final: prev: {
-          grapesy-etcd = dontCheck (addSetupDepends [ pkgs.protobuf ] (final.callCabal2nix "grapesy-etcd" ./grapesy-etcd { }));
+          grapesy-etcd = addSetupDepends [ pkgs.protobuf ] (final.callCabal2nix "grapesy-etcd" ./grapesy-etcd { });
+          grapesy-etcd-testing = final.callCabal2nix "grapesy-etcd-testing" ./grapesy-etcd-testing { };
         };
 
         legacyPackages = inputs.horizon-advance.legacyPackages.${system}.extend overlay;
+
       in
       {
 
         checks = let lu = inputs.lint-utils.linters.${system}; in {
           hlint = lu.hlint { src = self; hlint = pkgs.hlint; };
-          treefmt = lu.treefmt {
-            src = self;
-            buildInputs = [
-              pkgs.haskellPackages.cabal-fmt
-              pkgs.haskellPackages.fourmolu
-              pkgs.nixpkgs-fmt
-            ];
-            treefmt = pkgs.treefmt;
+          cabal-fmt = lu.cabal-fmt { src = self; };
+          fourmolu = lu.fourmolu { src = self; opts = ""; };
+          nixpkgs-fmt = lu.nixpkgs-fmt { src = self; };
+          vm-test = import ./nix/test-system.nix {
+            inherit (inputs) nixpkgs;
+            inherit pkgs system; haskellPackages = legacyPackages;
           };
         };
 
@@ -48,7 +48,7 @@
             legacyPackages.cabal-install
             legacyPackages.proto-lens-protoc
             pkgs.haskellPackages.cabal-fmt
-            pkgs.haskellPackages.fourmolu
+            pkgs.haskellPackages.stylish-haskell
             pkgs.hlint
             pkgs.nixpkgs-fmt
             pkgs.protobuf
