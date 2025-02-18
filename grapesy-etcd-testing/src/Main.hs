@@ -3,8 +3,8 @@ module Main (main) where
 import Network.GRPC.Client (Address (Address), Connection, Server (ServerInsecure), withConnection)
 import Network.GRPC.Common (def)
 import Network.GRPC.Common.Protobuf (defMessage, (&), (.~))
-
 import Network.GRPC.Etcd.Client.Simple qualified as Etcd
+import System.Exit (exitSuccess)
 
 {-------------------------------------------------------------------------------
   Call some methods of the Etcd service
@@ -25,7 +25,7 @@ put conn = do
 watch :: Connection -> IO ()
 watch conn = do
     let req = defMessage & #createRequest .~ (defMessage & #key .~ "foo")
-    Etcd.watch conn [req] print
+    Etcd.watch conn [req] (const exitSuccess)
 
 main :: IO ()
 main =
