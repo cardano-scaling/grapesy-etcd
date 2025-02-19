@@ -12,7 +12,7 @@ import Network.GRPC.Client (Connection, rpc)
 import Network.GRPC.Client.StreamType.IO (biDiStreaming, nonStreaming)
 import Network.GRPC.Common.NextElem qualified as NextElem
 import Network.GRPC.Common.Protobuf (Proto, Protobuf)
-import Proto.API.Etcd (KV, PutRequest, PutResponse, RangeRequest, RangeResponse, Watch, WatchRequest, WatchResponse)
+import Network.GRPC.Etcd (KV, PutRequest, PutResponse, RangeRequest, RangeResponse, Watch, WatchRequest, WatchResponse)
 
 put :: (MonadIO m) => (MonadMask m) => Connection -> Proto PutRequest -> m (Proto PutResponse)
 put conn = nonStreaming conn (rpc @(Protobuf KV "put"))
