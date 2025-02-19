@@ -22,8 +22,9 @@
       let
 
         overlay = final: prev: {
-          grapesy-etcd = addSetupDepends [ pkgs.protobuf ] (final.callCabal2nix "grapesy-etcd" ./grapesy-etcd { });
+          grapesy-etcd = final.callCabal2nix "grapesy-etcd" ./grapesy-etcd { };
           grapesy-etcd-testing = final.callCabal2nix "grapesy-etcd-testing" ./grapesy-etcd-testing { };
+          proto-lens-etcd = addSetupDepends [ pkgs.protobuf ] (final.callCabal2nix "proto-lens-etcd" ./proto-lens-etcd { });
         };
 
         legacyPackages = inputs.horizon-advance.legacyPackages.${system}.extend overlay;
@@ -43,8 +44,9 @@
         };
 
 
-        devShells.default = legacyPackages.grapesy-etcd.env.overrideAttrs (attrs: {
-          buildInputs = attrs.buildInputs ++ [
+        devShells.default = legacyPackages.shellFor {
+          packages = p: [ p.grapesy-etcd p.grapesy-etcd-testing p.proto-lens-etcd ];
+          buildInputs = [
             legacyPackages.cabal-install
             legacyPackages.proto-lens-protoc
             pkgs.haskellPackages.cabal-fmt
@@ -54,7 +56,7 @@
             pkgs.protobuf
             pkgs.treefmt
           ];
-        });
+        };
 
         packages.default = legacyPackages.grapesy-etcd;
 
