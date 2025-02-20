@@ -30,7 +30,7 @@
         legacyPackages = inputs.horizon-advance.legacyPackages.${system}.extend overlay;
 
       in
-      {
+      rec {
 
         checks = let lu = inputs.lint-utils.linters.${system}; in {
           hlint = lu.hlint { src = self; hlint = pkgs.hlint; };
@@ -41,6 +41,9 @@
             inherit (inputs) nixpkgs;
             inherit pkgs system; haskellPackages = legacyPackages;
           };
+          werror-grapesy-etcd = lu.werror { pkg = packages.grapesy-etcd; };
+          werror-grapesy-etcd-testing = lu.werror { pkg = packages.grapesy-etcd-testing; };
+          werror-proto-lens-etcd = lu.werror { pkg = packages.proto-lens-etcd; };
         };
 
 
@@ -58,7 +61,12 @@
           ];
         };
 
-        packages.default = legacyPackages.grapesy-etcd;
+        packages = {
+          inherit (legacyPackages)
+            grapesy-etcd
+            grapesy-etcd-testing
+            proto-lens-etcd;
+        };
 
       };
   };
