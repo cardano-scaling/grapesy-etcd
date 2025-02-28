@@ -2,10 +2,6 @@
   description = "grapesy-etcd: gRPC haskell client for etcd.io";
 
   inputs = {
-    CHaP = {
-      url = "github:input-output-hk/cardano-haskell-packages?ref=repo";
-      flake = false;
-    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     horizon-advance.url = "git+https://gitlab.horizon-haskell.net/package-sets/horizon-advance?ref=lts/ghc-9.10.x";
     lint-utils = {

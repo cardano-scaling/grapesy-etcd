@@ -1,22 +1,5 @@
 {
   "nodes": {
-    "CHaP": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1739645821,
-        "narHash": "sha256-HjAchUMLsiScm8Jyd+I/5YJKUjDp1r+XFzr05d+o+r4=",
-        "owner": "input-output-hk",
-        "repo": "cardano-haskell-packages",
-        "rev": "48b941c5729384f38b79c6f473ddbf920cb310ea",
-        "type": "github"
-      },
-      "original": {
-        "owner": "input-output-hk",
-        "ref": "repo",
-        "repo": "cardano-haskell-packages",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -350,7 +333,6 @@
     },
     "root": {
       "inputs": {
-        "CHaP": "CHaP",
         "flake-parts": "flake-parts",
         "horizon-advance": "horizon-advance",
         "lint-utils": "lint-utils",
