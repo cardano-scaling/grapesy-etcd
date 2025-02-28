@@ -30,9 +30,15 @@
 
         checks = let lu = inputs.lint-utils.linters.${system}; in {
           hlint = lu.hlint { src = self; hlint = pkgs.hlint; };
-          cabal-fmt = lu.cabal-fmt { src = self; };
-          fourmolu = lu.fourmolu { src = self; opts = ""; };
-          nixpkgs-fmt = lu.nixpkgs-fmt { src = self; };
+          treefmt = lu.treefmt {
+            src = self;
+            buildInputs = [
+              pkgs.haskellPackages.cabal-fmt
+              pkgs.haskellPackages.fourmolu
+              pkgs.nixpkgs-fmt
+            ];
+            treefmt = pkgs.treefmt;
+          };
           vm-test = import ./nix/test-system.nix {
             inherit (inputs) nixpkgs;
             inherit pkgs system; haskellPackages = legacyPackages;
@@ -49,7 +55,7 @@
             legacyPackages.cabal-install
             legacyPackages.proto-lens-protoc
             pkgs.haskellPackages.cabal-fmt
-            pkgs.haskellPackages.stylish-haskell
+            pkgs.haskellPackages.fourmolu
             pkgs.hlint
             pkgs.nixpkgs-fmt
             pkgs.protobuf
