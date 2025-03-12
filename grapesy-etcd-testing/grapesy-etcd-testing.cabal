@@ -14,7 +14,10 @@ extra-source-files:
   README.md
 
 common lang
-  build-depends:      base >=4.14 && <5
+  build-depends:
+    , base   >=4.14 && <5
+    , retry
+
   default-language:   GHC2021
   ghc-options:        -Wall -Wmissing-import-lists
   default-extensions:
@@ -24,9 +27,18 @@ common lang
     OverloadedStrings
     TypeFamilies
 
-executable tests
+executable alice
   import:         lang
-  main-is:        Main.hs
+  main-is:        Alice.hs
+  hs-source-dirs: src
+  build-depends:
+    , bytestring
+    , grapesy
+    , grapesy-etcd
+
+executable bob
+  import:         lang
+  main-is:        Bob.hs
   hs-source-dirs: src
   build-depends:
     , grapesy

@@ -1,5 +1,10 @@
 module Main (main) where
 
+import Control.Concurrent (threadDelay)
+import Control.Exception (SomeException, try)
+import Control.Monad (replicateM_)
+import Control.Retry (RetryPolicy, constantDelay, limitRetries, retrying)
+import Data.ByteString (ByteString)
 import Network.GRPC.Client (Address (Address), Connection, Server (ServerInsecure), withConnection)
 import Network.GRPC.Common (def)
 import Network.GRPC.Common.Protobuf (defMessage, (&), (.~))
@@ -16,9 +21,14 @@ range conn = do
     resp <- Etcd.range conn req
     print resp
 
-put :: Connection -> IO ()
-put conn = do
-    let req = defMessage & #key .~ "foo"
+put :: ByteString -> Connection -> IO ()
+put value conn = do
+    let req =
+            defMessage
+                & #key
+                .~ "foo"
+                & #value
+                .~ value
     resp <- Etcd.put conn req
     print resp
 
@@ -27,12 +37,23 @@ watch conn = do
     let req = defMessage & #createRequest .~ (defMessage & #key .~ "foo")
     Etcd.watch conn [req] (const exitSuccess)
 
+subroutine :: Connection -> IO ()
+subroutine conn = do
+    _ <- range conn
+    replicateM_ 1_000 $ do
+        put "sneaky" conn
+        threadDelay 10_000
+    _ <- put "alice" conn
+    watch conn
+
+retryPolicy :: RetryPolicy
+retryPolicy = constantDelay 1000000 <> limitRetries 3 -- 1 second delay, max 3 retries
+
 main :: IO ()
-main =
-    withConnection def server $ do
-        _ <- range
-        _ <- put
-        watch
+main = withConnection def server $ \conn -> do
+    retrying retryPolicy (const $ const $ pure True) $ \_ -> do
+        x <- try (subroutine conn) :: IO (Either SomeException ())
+        print x
   where
     server :: Server
     server = ServerInsecure $ Address "127.0.0.1" 2379 Nothing
