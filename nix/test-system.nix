@@ -25,7 +25,7 @@ let
         networking.firewall.enable = false;
         virtualisation = {
           cores = 2;
-          memorySize = 4096;
+          memorySize = 2048;
         };
       };
       bob = { ... }: {
@@ -43,7 +43,7 @@ let
         networking.firewall.enable = false;
         virtualisation = {
           cores = 2;
-          memorySize = 4096;
+          memorySize = 2048;
         };
       };
       carol = { ... }: {
@@ -61,7 +61,7 @@ let
         networking.firewall.enable = false;
         virtualisation = {
           cores = 2;
-          memorySize = 4096;
+          memorySize = 2048;
         };
       };
     };
@@ -78,10 +78,11 @@ let
       alice.succeed("etcdctl member list --endpoints http://127.0.0.1:2379")
       bob.succeed("etcdctl member list --endpoints http://127.0.0.1:2379")
       carol.succeed("etcdctl member list --endpoints http://127.0.0.1:2379")
-
-      bob.block()
+      bob.shutdown()
+      alice.sleep(5)
       alice.succeed("${haskellPackages.grapesy-etcd-testing}/bin/alice")
-      bob.unblock()
+      bob.start()
+      bob.wait_for_open_port(2379)
       bob.succeed("${haskellPackages.grapesy-etcd-testing}/bin/bob")
     '';
   };
