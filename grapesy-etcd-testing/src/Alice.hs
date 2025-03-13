@@ -1,9 +1,7 @@
 module Main (main) where
 
 import Control.Concurrent (threadDelay)
-import Control.Exception (SomeException, try)
 import Control.Monad (replicateM_)
-import Control.Retry (RetryPolicy, constantDelay, limitRetries, retrying)
 import Data.ByteString (ByteString)
 import Network.GRPC.Client (Address (Address), Connection, Server (ServerInsecure), withConnection)
 import Network.GRPC.Common (def)
@@ -46,14 +44,8 @@ subroutine conn = do
     _ <- put "alice" conn
     watch conn
 
-retryPolicy :: RetryPolicy
-retryPolicy = constantDelay 1000000 <> limitRetries 3 -- 1 second delay, max 3 retries
-
 main :: IO ()
-main = withConnection def server $ \conn -> do
-    retrying retryPolicy (const $ const $ pure True) $ \_ -> do
-        x <- try (subroutine conn) :: IO (Either SomeException ())
-        print x
+main = withConnection def server subroutine
   where
     server :: Server
     server = ServerInsecure $ Address "127.0.0.1" 2379 Nothing
