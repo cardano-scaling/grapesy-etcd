@@ -3,8 +3,8 @@ module Main (main) where
 import Control.Concurrent (threadDelay)
 import Control.Monad (replicateM_)
 import Data.ByteString (ByteString)
-import Network.GRPC.Client (Address (Address), Connection, Server (ServerInsecure), withConnection)
-import Network.GRPC.Common (def)
+import Network.GRPC.Client (Address (Address), Connection, Server (ServerInsecure, ServerSecure), ServerValidation(ValidateServer), certStoreFromSystem, withConnection)
+import Network.GRPC.Common (def, SslKeyLog(SslKeyLogNone))
 import Network.GRPC.Common.Protobuf (defMessage, (&), (.~))
 import Network.GRPC.Etcd.Client.Simple qualified as Etcd
 import System.Exit (exitSuccess)

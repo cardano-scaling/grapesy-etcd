@@ -41,7 +41,7 @@
           };
           vm-test = import ./nix/test-system.nix {
             inherit (inputs) nixpkgs;
-            inherit pkgs system; haskellPackages = legacyPackages;
+            inherit self pkgs system; haskellPackages = legacyPackages;
           };
           werror-grapesy-etcd = lu.werror { pkg = packages.grapesy-etcd; };
           werror-grapesy-etcd-testing = lu.werror { pkg = packages.grapesy-etcd-testing; };
