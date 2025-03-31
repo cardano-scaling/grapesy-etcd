@@ -3,7 +3,7 @@
 
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
-    horizon-advance.url = "git+https://gitlab.horizon-haskell.net/package-sets/horizon-advance?ref=lts/ghc-9.10.x";
+    horizon-advance.url = "git+https://gitlab.horizon-haskell.net/package-sets/horizon-platform?ref=lts/ghc-9.10.x";
     lint-utils = {
       url = "github:homotopic/lint-utils";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,9 +18,12 @@
       let
 
         overlay = final: prev: {
+          etcd-embed = addSetupDepends [ pkgs.etcd ] (final.callCabal2nix "etcd-embed" ./etcd-embed { });
           grapesy-etcd = final.callCabal2nix "grapesy-etcd" ./grapesy-etcd { };
           grapesy-etcd-testing = final.callCabal2nix "grapesy-etcd-testing" ./grapesy-etcd-testing { };
           proto-lens-etcd = addSetupDepends [ pkgs.protobuf ] (final.callCabal2nix "proto-lens-etcd" ./proto-lens-etcd { });
+          which-embed = final.callCabal2nix "which-embed" ./which-embed { };
+          which = final.callHackage "which" "0.2.0.3" { };
         };
 
         legacyPackages = inputs.horizon-advance.legacyPackages.${system}.extend overlay;
@@ -43,9 +46,11 @@
             inherit (inputs) nixpkgs;
             inherit self pkgs system; haskellPackages = legacyPackages;
           };
+          werror-etcd-embed = lu.werror { pkg = packages.etcd-embed; };
           werror-grapesy-etcd = lu.werror { pkg = packages.grapesy-etcd; };
           werror-grapesy-etcd-testing = lu.werror { pkg = packages.grapesy-etcd-testing; };
           werror-proto-lens-etcd = lu.werror { pkg = packages.proto-lens-etcd; };
+          werror-which-embed = lu.werror { pkg = packages.which-embed; };
         };
 
 
@@ -56,6 +61,7 @@
             legacyPackages.proto-lens-protoc
             pkgs.haskellPackages.cabal-fmt
             pkgs.haskellPackages.fourmolu
+            pkgs.etcd
             pkgs.hlint
             pkgs.nixpkgs-fmt
             pkgs.protobuf
@@ -65,9 +71,11 @@
 
         packages = {
           inherit (legacyPackages)
+            etcd-embed
             grapesy-etcd
             grapesy-etcd-testing
-            proto-lens-etcd;
+            proto-lens-etcd
+            which-embed;
         };
 
       };
