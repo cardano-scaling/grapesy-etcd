@@ -1,4 +1,4 @@
-{ nixpkgs, pkgs, system, haskellPackages, ... }:
+{ self, nixpkgs, pkgs, system, haskellPackages, ... }:
 let
   makeTest = (import (nixpkgs + "/nixos/lib/testing-python.nix") { inherit system; }).makeTest;
 
@@ -15,11 +15,14 @@ let
             "ETCD_AUTO_COMPACTION_RETENTION" = "100";
             "ETCD_AUTO_COMPACTION_MODE" = "revision";
           };
-          initialAdvertisePeerUrls = [ "http://alice:2380" ];
-          initialCluster = [ "alice=http://alice:2380,bob=http://bob:2380,carol=http://carol:2380" ];
+          initialAdvertisePeerUrls = [ "https://alice:2380" ];
+          initialCluster = [ "alice=https://alice:2380,bob=https://bob:2380,carol=https://carol:2380" ];
           initialClusterToken = "grapesy-etcd-test";
           listenClientUrls = [ "http://127.0.0.1:2379" ];
-          listenPeerUrls = [ "http://0.0.0.0:2380" ];
+          listenPeerUrls = [ "https://0.0.0.0:2380" ];
+          peerKeyFile = "${self}/nix/peer.key";
+          peerCertFile = "${self}/nix/peer.crt";
+          peerTrustedCaFile = "${self}/nix/peer.crt";
           name = "alice";
         };
         networking.firewall.enable = false;
@@ -33,11 +36,14 @@ let
         services.etcd = {
           advertiseClientUrls = [ "http://bob:2379" ];
           enable = true;
-          initialAdvertisePeerUrls = [ "http://bob:2380" ];
-          initialCluster = [ "alice=http://alice:2380,bob=http://bob:2380,carol=http://carol:2380" ];
+          initialAdvertisePeerUrls = [ "https://bob:2380" ];
+          initialCluster = [ "alice=https://alice:2380,bob=https://bob:2380,carol=https://carol:2380" ];
           initialClusterToken = "grapesy-etcd-test";
           listenClientUrls = [ "http://127.0.0.1:2379" ];
-          listenPeerUrls = [ "http://0.0.0.0:2380" ];
+          listenPeerUrls = [ "https://0.0.0.0:2380" ];
+          peerKeyFile = "${self}/nix/peer.key";
+          peerCertFile = "${self}/nix/peer.crt";
+          peerTrustedCaFile = "${self}/nix/peer.crt";
           name = "bob";
         };
         networking.firewall.enable = false;
@@ -51,11 +57,14 @@ let
         services.etcd = {
           advertiseClientUrls = [ "http://carol:2379" ];
           enable = true;
-          initialAdvertisePeerUrls = [ "http://carol:2380" ];
-          initialCluster = [ "alice=http://alice:2380,bob=http://bob:2380,carol=http://carol:2380" ];
+          initialAdvertisePeerUrls = [ "https://carol:2380" ];
+          initialCluster = [ "alice=https://alice:2380,bob=https://bob:2380,carol=https://carol:2380" ];
           initialClusterToken = "grapesy-etcd-test";
           listenClientUrls = [ "http://127.0.0.1:2379" ];
-          listenPeerUrls = [ "http://0.0.0.0:2380" ];
+          listenPeerUrls = [ "https://0.0.0.0:2380" ];
+          peerKeyFile = "${self}/nix/peer.key";
+          peerCertFile = "${self}/nix/peer.crt";
+          peerTrustedCaFile = "${self}/nix/peer.crt";
           name = "carol";
         };
         networking.firewall.enable = false;
