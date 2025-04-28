@@ -87,11 +87,12 @@ let
       alice.succeed("etcdctl member list --endpoints http://127.0.0.1:2379")
       bob.succeed("etcdctl member list --endpoints http://127.0.0.1:2379")
       carol.succeed("etcdctl member list --endpoints http://127.0.0.1:2379")
-      bob.shutdown()
-      alice.sleep(5)
+      bob.block()
       alice.succeed("${haskellPackages.grapesy-etcd-testing}/bin/alice")
-      bob.start()
+      bob.unblock()
       bob.wait_for_open_port(2379)
+      bob.wait_for_open_port(2380)
+      bob.succeed("etcdctl member list --endpoints http://127.0.0.1:2379")
       bob.succeed("${haskellPackages.grapesy-etcd-testing}/bin/bob")
     '';
   };
