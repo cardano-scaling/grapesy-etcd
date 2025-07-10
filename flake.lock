@@ -1,5 +1,37 @@
 {
   "nodes": {
+    "etcd": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1752134391,
+        "narHash": "sha256-LBP2JWr4vdpEIPTJ8wj3RYYBHI+qmfzqILISm8D3eZY=",
+        "owner": "etcd-io",
+        "repo": "etcd",
+        "rev": "6088ddf90a3c481f7902dd919e7aa0ff9ec57ad5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "etcd-io",
+        "ref": "v3.6.2",
+        "repo": "etcd",
+        "type": "github"
+      }
+    },
+    "files": {
+      "locked": {
+        "lastModified": 1750263550,
+        "narHash": "sha256-EW/QJ8i/13GgiynBb6zOMxhLU1uEkRqmzbIDEP23yVA=",
+        "owner": "mightyiam",
+        "repo": "files",
+        "rev": "5f4ef1fd1f9012354a9748be093e277675d10f07",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mightyiam",
+        "repo": "files",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -692,6 +724,8 @@
     },
     "root": {
       "inputs": {
+        "etcd": "etcd",
+        "files": "files",
         "flake-parts": "flake-parts",
         "horizon-advance": "horizon-advance",
         "hydra-coding-standards": "hydra-coding-standards",

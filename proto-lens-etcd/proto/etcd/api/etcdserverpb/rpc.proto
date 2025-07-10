@@ -507,7 +507,9 @@ message RangeResponse {
   repeated mvccpb.KeyValue kvs = 2;
   // more indicates if there are more keys to return in the requested range.
   bool more = 3;
-  // count is set to the number of keys within the range when requested.
+  // count is set to the actual number of keys within the range when requested.
+  // Unlike Kvs, it is unaffected by limits and filters (e.g., Min/Max, Create/Modify, Revisions)
+  // and reflects the full count within the specified range.
   int64 count = 4;
 }
 
@@ -1194,10 +1196,19 @@ message StatusResponse {
   int64 dbSizeInUse = 9 [(versionpb.etcd_version_field)="3.4"];
   // isLearner indicates if the member is raft learner.
   bool isLearner = 10 [(versionpb.etcd_version_field)="3.4"];
-  // storageVersion is the version of the db file. It might be get updated with delay in relationship to the target cluster version.
+  // storageVersion is the version of the db file. It might be updated with delay in relationship to the target cluster version.
   string storageVersion = 11 [(versionpb.etcd_version_field)="3.6"];
   // dbSizeQuota is the configured etcd storage quota in bytes (the value passed to etcd instance by flag --quota-backend-bytes)
   int64 dbSizeQuota = 12 [(versionpb.etcd_version_field)="3.6"];
+  // downgradeInfo indicates if there is downgrade process.
+  DowngradeInfo downgradeInfo = 13 [(versionpb.etcd_version_field)="3.6"];
+}
+
+message DowngradeInfo {
+	// enabled indicates whether the cluster is enabled to downgrade.
+  bool enabled = 1;
+	// targetVersion is the target downgrade version.
+  string targetVersion = 2;
 }
 
 message AuthEnableRequest {

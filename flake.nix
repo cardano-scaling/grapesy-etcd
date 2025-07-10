@@ -2,6 +2,11 @@
   description = "grapesy-etcd: gRPC haskell client for etcd.io";
 
   inputs = {
+    etcd = {
+      url = "github:etcd-io/etcd/v3.6.2";
+      flake = false;
+    };
+    files.url = "github:mightyiam/files";
     flake-parts.url = "github:hercules-ci/flake-parts";
     horizon-advance.url = "git+https://gitlab.horizon-haskell.net/package-sets/horizon-advance?ref=lts/ghc-9.10.x";
     hydra-coding-standards.url = "github:cardano-scaling/hydra-coding-standards/0.7.0";
