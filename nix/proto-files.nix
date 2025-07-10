@@ -19,6 +19,10 @@
           target = "proto-lens-etcd/proto/etcd/api/versionpb/version.proto";
         }
         {
+          source = "${inputs.gogoproto}/gogoproto/gogo.proto";
+          target = "proto-lens-etcd/proto/gogoproto/gogo.proto";
+        }
+        {
           source = "${inputs.grpc-gateway}/protoc-gen-openapiv2/options/annotations.proto";
           target = "proto-lens-etcd/proto/protoc-gen-openapiv2/options/annotations.proto";
         }

@@ -195,6 +195,22 @@
         "type": "github"
       }
     },
+    "gogoproto": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1724052732,
+        "narHash": "sha256-KO0D4Dj+a8WHMqJ3GMkLv+tmUYrN42MX1XLLoxK+h9I=",
+        "owner": "cosmos",
+        "repo": "gogoproto",
+        "rev": "28b2facaa30178e137477bcc756a72a7a3c84b6b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cosmos",
+        "repo": "gogoproto",
+        "type": "github"
+      }
+    },
     "grpc-gateway": {
       "flake": false,
       "locked": {
@@ -744,6 +760,7 @@
         "etcd": "etcd",
         "files": "files",
         "flake-parts": "flake-parts",
+        "gogoproto": "gogoproto",
         "grpc-gateway": "grpc-gateway",
         "horizon-advance": "horizon-advance",
         "hydra-coding-standards": "hydra-coding-standards",

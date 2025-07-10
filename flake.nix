@@ -7,6 +7,10 @@
       flake = false;
     };
     files.url = "github:mightyiam/files";
+    gogoproto = {
+      url = "github:cosmos/gogoproto/v1.7.0";
+      flake = false;
+    };
     grpc-gateway = {
       url = "github:grpc-ecosystem/grpc-gateway/v2.27.1";
       flake = false;
