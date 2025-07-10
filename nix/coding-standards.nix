@@ -8,6 +8,7 @@
         proto-lens-etcd
       ];
     };
+    weeder.enable = lib.mkForce false;
     werrorwolf.extra-flags = lib.mkForce [ ];
   };
 
