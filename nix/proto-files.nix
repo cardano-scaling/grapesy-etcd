@@ -18,6 +18,14 @@
           source = "${inputs.etcd}/api/versionpb/version.proto";
           target = "proto-lens-etcd/proto/etcd/api/versionpb/version.proto";
         }
+        {
+          source = "${inputs.grpc-gateway}/protoc-gen-openapiv2/options/annotations.proto";
+          target = "proto-lens-etcd/proto/protoc-gen-openapiv2/options/annotations.proto";
+        }
+        {
+          source = "${inputs.grpc-gateway}/protoc-gen-openapiv2/options/openapiv2.proto";
+          target = "proto-lens-etcd/proto/protoc-gen-openapiv2/options/openapiv2.proto";
+        }
       ];
     in
     {

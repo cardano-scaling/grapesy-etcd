@@ -195,6 +195,23 @@
         "type": "github"
       }
     },
+    "grpc-gateway": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1750781308,
+        "narHash": "sha256-a7i3tONdSzKq0pWx3okIu65XFTFcXbJd21UItCFz7TA=",
+        "owner": "grpc-ecosystem",
+        "repo": "grpc-gateway",
+        "rev": "d08f8db7a006221004859a974ecc1d8a8cd5fe69",
+        "type": "github"
+      },
+      "original": {
+        "owner": "grpc-ecosystem",
+        "ref": "v2.27.1",
+        "repo": "grpc-gateway",
+        "type": "github"
+      }
+    },
     "horizon-advance": {
       "inputs": {
         "flake-parts": [
@@ -727,6 +744,7 @@
         "etcd": "etcd",
         "files": "files",
         "flake-parts": "flake-parts",
+        "grpc-gateway": "grpc-gateway",
         "horizon-advance": "horizon-advance",
         "hydra-coding-standards": "hydra-coding-standards",
         "import-tree": "import-tree_4",

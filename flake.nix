@@ -7,6 +7,10 @@
       flake = false;
     };
     files.url = "github:mightyiam/files";
+    grpc-gateway = {
+      url = "github:grpc-ecosystem/grpc-gateway/v2.27.1";
+      flake = false;
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     horizon-advance.url = "git+https://gitlab.horizon-haskell.net/package-sets/horizon-advance?ref=lts/ghc-9.10.x";
     hydra-coding-standards.url = "github:cardano-scaling/hydra-coding-standards/0.7.0";
