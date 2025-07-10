@@ -11,6 +11,10 @@
       url = "github:cosmos/gogoproto/v1.7.0";
       flake = false;
     };
+    googleapis = {
+      url = "github:googleapis/googleapis";
+      flake = false;
+    };
     grpc-gateway = {
       url = "github:grpc-ecosystem/grpc-gateway/v2.27.1";
       flake = false;

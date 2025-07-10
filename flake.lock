@@ -198,16 +198,33 @@
     "gogoproto": {
       "flake": false,
       "locked": {
-        "lastModified": 1724052732,
-        "narHash": "sha256-KO0D4Dj+a8WHMqJ3GMkLv+tmUYrN42MX1XLLoxK+h9I=",
+        "lastModified": 1723577612,
+        "narHash": "sha256-mWuKux3FuXOQXPqE8nEWKCsKAoE4CUb1UotjJ1ujajI=",
         "owner": "cosmos",
         "repo": "gogoproto",
-        "rev": "28b2facaa30178e137477bcc756a72a7a3c84b6b",
+        "rev": "70f82eb45331b1eb0db349b02a73a9d8e914305f",
         "type": "github"
       },
       "original": {
         "owner": "cosmos",
+        "ref": "v1.7.0",
         "repo": "gogoproto",
+        "type": "github"
+      }
+    },
+    "googleapis": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1752144134,
+        "narHash": "sha256-QGovAPvalPzP/feuRx5oTYtrtv6f5fnB1h9Kp43lBLQ=",
+        "owner": "googleapis",
+        "repo": "googleapis",
+        "rev": "29839aab3c3eef13c1e5434f7b2860f083cee92d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "googleapis",
+        "repo": "googleapis",
         "type": "github"
       }
     },
@@ -761,6 +778,7 @@
         "files": "files",
         "flake-parts": "flake-parts",
         "gogoproto": "gogoproto",
+        "googleapis": "googleapis",
         "grpc-gateway": "grpc-gateway",
         "horizon-advance": "horizon-advance",
         "hydra-coding-standards": "hydra-coding-standards",

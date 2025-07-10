@@ -23,6 +23,14 @@
           target = "proto-lens-etcd/proto/gogoproto/gogo.proto";
         }
         {
+          source = "${inputs.googleapis}/google/api/annotations.proto";
+          target = "proto-lens-etcd/proto/google/api/annotations.proto";
+        }
+        {
+          source = "${inputs.googleapis}/google/api/http.proto";
+          target = "proto-lens-etcd/proto/google/api/http.proto";
+        }
+        {
           source = "${inputs.grpc-gateway}/protoc-gen-openapiv2/options/annotations.proto";
           target = "proto-lens-etcd/proto/protoc-gen-openapiv2/options/annotations.proto";
         }
