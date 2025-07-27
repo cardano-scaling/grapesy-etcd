@@ -1,9 +1,10 @@
 { inputs, self, ... }: {
 
-  perSystem = { pkgs, config, system, ... }: {
+  perSystem = { pkgs, lib, config, system, ... }: {
     checks.vm-test =
       let
         inherit ((import (inputs.nixpkgs + "/nixos/lib/testing-python.nix") { inherit system; })) makeTest;
+        testData = lib.cleanSource "${self}/nix/test";
 
       in
       makeTest {
@@ -24,9 +25,9 @@
               initialClusterToken = "grapesy-etcd-test";
               listenClientUrls = [ "http://127.0.0.1:2379" ];
               listenPeerUrls = [ "https://0.0.0.0:2380" ];
-              peerKeyFile = "${self}/nix/peer.key";
-              peerCertFile = "${self}/nix/peer.crt";
-              peerTrustedCaFile = "${self}/nix/peer.crt";
+              peerKeyFile = "${testData}/peer.key";
+              peerCertFile = "${testData}/peer.crt";
+              peerTrustedCaFile = "${testData}/peer.crt";
               name = "alice";
             };
             networking.firewall.enable = false;
@@ -45,9 +46,9 @@
               initialClusterToken = "grapesy-etcd-test";
               listenClientUrls = [ "http://127.0.0.1:2379" ];
               listenPeerUrls = [ "https://0.0.0.0:2380" ];
-              peerKeyFile = "${self}/nix/peer.key";
-              peerCertFile = "${self}/nix/peer.crt";
-              peerTrustedCaFile = "${self}/nix/peer.crt";
+              peerKeyFile = "${testData}/peer.key";
+              peerCertFile = "${testData}/peer.crt";
+              peerTrustedCaFile = "${testData}/peer.crt";
               name = "bob";
             };
             networking.firewall.enable = false;
@@ -66,9 +67,9 @@
               initialClusterToken = "grapesy-etcd-test";
               listenClientUrls = [ "http://127.0.0.1:2379" ];
               listenPeerUrls = [ "https://0.0.0.0:2380" ];
-              peerKeyFile = "${self}/nix/peer.key";
-              peerCertFile = "${self}/nix/peer.crt";
-              peerTrustedCaFile = "${self}/nix/peer.crt";
+              peerKeyFile = "${testData}/peer.key";
+              peerCertFile = "${testData}/peer.crt";
+              peerTrustedCaFile = "${testData}/peer.crt";
               name = "carol";
             };
             networking.firewall.enable = false;

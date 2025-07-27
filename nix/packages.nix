@@ -1,12 +1,12 @@
 { inputs, self, ... }: {
-  perSystem = { pkgs, system, ... }:
+  perSystem = { pkgs, lib, system, ... }:
     with pkgs.haskell.lib.compose;
     let
 
       overlay = final: _prev: {
-        grapesy-etcd = final.callCabal2nix "grapesy-etcd" "${self}/grapesy-etcd" { };
-        grapesy-etcd-testing = final.callCabal2nix "grapesy-etcd-testing" "${self}/grapesy-etcd-testing" { };
-        proto-lens-etcd = addSetupDepends [ pkgs.protobuf ] (final.callCabal2nix "proto-lens-etcd" "${self}/proto-lens-etcd" { });
+        grapesy-etcd = final.callCabal2nix "grapesy-etcd" (lib.cleanSource "${self}/grapesy-etcd") { };
+        grapesy-etcd-testing = final.callCabal2nix "grapesy-etcd-testing" (lib.cleanSource "${self}/grapesy-etcd-testing") { };
+        proto-lens-etcd = addSetupDepends [ pkgs.protobuf ] (final.callCabal2nix "proto-lens-etcd" (lib.cleanSource "${self}/proto-lens-etcd") { });
       };
 
       legacyPackages = inputs.horizon-advance.legacyPackages.${system}.extend overlay;
