@@ -1,10 +1,11 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Network.GRPC.Etcd.Client.Simple (
-    put,
+module Network.GRPC.Etcd.Client.Simple
+  ( put,
     range,
     watch,
-) where
+  )
+where
 
 import Control.Monad.Catch (MonadMask)
 import Control.Monad.IO.Class (MonadIO)
@@ -22,5 +23,5 @@ range conn = nonStreaming conn (rpc @(Protobuf KV "range"))
 
 watch :: (MonadIO m) => (MonadMask m) => Connection -> [Proto WatchRequest] -> (Proto WatchResponse -> m ()) -> m ()
 watch conn reqs resp = biDiStreaming conn (rpc @(Protobuf Watch "watch")) $ \send recv -> do
-    NextElem.forM_ reqs send
-    NextElem.whileNext_ recv resp
+  NextElem.forM_ reqs send
+  NextElem.whileNext_ recv resp
