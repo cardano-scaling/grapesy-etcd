@@ -13,17 +13,17 @@ import System.Exit (exitFailure, exitSuccess)
 
 range :: Connection -> IO ()
 range conn = do
-    let req =
-            defMessage
-                & #key
-                .~ "foo"
-    res <- Etcd.range conn req
-    print res
-    let kvs = res ^. #kvs
-    when (null kvs) exitFailure
-    forM_ (res ^. #kvs) $ \kv -> do
-        let value = kv ^. #value
-        if value == "alice" then exitSuccess else exitFailure
+  let req =
+        defMessage
+          & #key
+          .~ "foo"
+  res <- Etcd.range conn req
+  print res
+  let kvs = res ^. #kvs
+  when (null kvs) exitFailure
+  forM_ (res ^. #kvs) $ \kv -> do
+    let value = kv ^. #value
+    if value == "alice" then exitSuccess else exitFailure
 
 main :: IO ()
 main = withConnection def server range

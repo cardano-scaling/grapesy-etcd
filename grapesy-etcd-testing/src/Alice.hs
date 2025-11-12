@@ -15,34 +15,34 @@ import System.Exit (exitSuccess)
 
 range :: Connection -> IO ()
 range conn = do
-    let req = defMessage & #key .~ "foo"
-    resp <- Etcd.range conn req
-    print resp
+  let req = defMessage & #key .~ "foo"
+  resp <- Etcd.range conn req
+  print resp
 
 put :: ByteString -> Connection -> IO ()
 put value conn = do
-    let req =
-            defMessage
-                & #key
-                .~ "foo"
-                & #value
-                .~ value
-    resp <- Etcd.put conn req
-    print resp
+  let req =
+        defMessage
+          & #key
+          .~ "foo"
+          & #value
+          .~ value
+  resp <- Etcd.put conn req
+  print resp
 
 watch :: Connection -> IO ()
 watch conn = do
-    let req = defMessage & #createRequest .~ (defMessage & #key .~ "foo")
-    Etcd.watch conn [req] (const exitSuccess)
+  let req = defMessage & #createRequest .~ (defMessage & #key .~ "foo")
+  Etcd.watch conn [req] (const exitSuccess)
 
 subroutine :: Connection -> IO ()
 subroutine conn = do
-    _ <- range conn
-    replicateM_ 1_000 $ do
-        put "sneaky" conn
-        threadDelay 10_000
-    _ <- put "alice" conn
-    watch conn
+  _ <- range conn
+  replicateM_ 1_000 $ do
+    put "sneaky" conn
+    threadDelay 10_000
+  _ <- put "alice" conn
+  watch conn
 
 main :: IO ()
 main = withConnection def server subroutine
