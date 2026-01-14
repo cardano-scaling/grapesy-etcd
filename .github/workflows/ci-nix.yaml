@@ -15,7 +15,11 @@ permissions:
 jobs:
   devour-flake:
     name: "Devour Flake"
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        system: [ ubuntu-latest, ubuntu-24.04-arm ]
+
+    runs-on: ${{ matrix.system }}
     steps:
     - name: 📥 Checkout repository
       uses: actions/checkout@v4
